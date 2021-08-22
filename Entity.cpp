@@ -1,10 +1,28 @@
-#include "EntityWrapper.h"
+#include "Entity.h"
 #include "LDtkLoader/Entity.hpp"
 #include "Utilities.h"
+#include "BestiaryEntry.h"
+#include "Rand.h"
 
 #include <cmath>
 
-EntityWrapper::EntityWrapper(const ldtk::Entity& e, int cell_size) :m_entity(e), m_pos(static_cast<float>(e.getPosition().x), static_cast<float>(e.getPosition().y)), m_cell_size(cell_size)
+using namespace rpge;
+
+Entity::Entity(const ldtk::Entity& e, int cell_size, rpge::BestiaryEntry be) : Entity(e, cell_size)
+{
+	if (be.getLoot().gold_max)
+		m_gold = Rand<unsigned int>(be.getLoot().gold_max, be.getLoot().gold_min)();
+
+	if (be.getLoot().item_drops.size() > 0)
+	{
+		auto r = Rand<unsigned int>(100, 0);
+		for (auto& item : be.getLoot().item_drops)
+			if (r() <= item.drop_chance)
+				m_items.push_back(item.item_name);
+	}
+}
+
+Entity::Entity(const ldtk::Entity& e, int cell_size) :m_entity(e), m_pos(static_cast<float>(e.getPosition().x), static_cast<float>(e.getPosition().y)), m_cell_size(cell_size)
 {
 	try {
 		auto& patrol = m_entity.getArrayField<ldtk::IntPoint>("patrol");
@@ -27,17 +45,17 @@ EntityWrapper::EntityWrapper(const ldtk::Entity& e, int cell_size) :m_entity(e),
 	}
 }
 
-auto EntityWrapper::GetEntity() const -> const ldtk::Entity&
+auto Entity::GetEntity() const -> const ldtk::Entity&
 {
 	return m_entity;
 }
 
-const ldtk::FloatPoint& EntityWrapper::GetPos() const
+const ldtk::FloatPoint& Entity::GetPos() const
 {
 	return m_pos;
 }
 
-void EntityWrapper::Move(float elapsedTime)
+void Entity::Move(float elapsedTime)
 {
 	if (!m_moves) return;
 
@@ -105,14 +123,14 @@ void EntityWrapper::Move(float elapsedTime)
 	} while (travel_distance > 0);
 }
 
-float EntityWrapper::GetLegDist()
+float Entity::GetLegDist()
 {
 	auto x_dist = m_pos.x - m_dest.x;
 	auto y_dist = m_pos.y - m_dest.y;
 	return sqrt(x_dist * x_dist + y_dist * y_dist);
 }
 
-void EntityWrapper::SetNextDest(ldtk::ArrayField<ldtk::IntPoint> patrol)
+void Entity::SetNextDest(ldtk::ArrayField<ldtk::IntPoint> patrol)
 {
 	m_dest = patrol[m_patrol_idx].value();
 	m_dest.x *= m_cell_size;

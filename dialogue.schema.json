@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Dialogue",
+  "description": "Contains all dialogue for a game in RPG-E 4U&ME",
+  "type": "array",
+  "items": {
+    "types": "initial_actor"
+  },
+  "otherTypes": {
+    "initial_actor": {
+      "title": "Initial Actor",
+      "description": "The actor which dialogue has been initiated with. An actor can potentially be anything: An NPC, another player character, an inanimate object (i.e. 'The bookshelf has many old books').",
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "Identifier of the actor",
+          "type": "string"
+        },
+        "specials": {
+          "description": "Dialogue list for special conditions",
+          "type": "array",
+          "items": {
+            "types": "special_dialogue"
+          }
+        },
+        "defaults": {
+          "description": "When no special cases are satisfied, these are the normal dialogue lines that occur",
+          "type": "array",
+          "items": {
+            "types": "dialogue"
+          }
+        }
+      },
+      "required":  ["name", "defaults"]
+    },
+    "special_dialogue": {
+      "title": "Special Dialogue",
+      "description": "A pairing of a special condition and dialogue for that special condition",
+      "type": "object",
+      "properties": {
+        "condition": {
+          "description": "A condition in which the dialogue property is relevant to be acted TODO I don't know how to represent this yet"
+        },
+        "dialogue": {
+          "description": "The dialogue for the condition",
+          "type": "dialogue"
+        }
+      },
+      "required": ["dialogue"]
+    },
+    "dialogue": {
+      "title": "Dialogue",
+      "description": "A series of speaking lines or internal thoughts resulting from a dialogue engagement",
+      "type": "array",
+      "items": {
+        "types": "line_of_dialogue"
+      }
+    },
+    "line_of_dialogue": {
+      "title": "Line of Dialogue",
+      "description": "A speaking line or internal thought which can be combined to form dialogue",
+      "type": "object",
+      "properties": {
+        "actor": {
+          "description": "Name of the actor who speaks or thinks the line",
+          "type": "string"
+        },
+        "line": {
+          "description": "Line of dialogue",
+          "type": "string"
+        }
+      },
+      "required": ["line"]
+    }
+  }
+}

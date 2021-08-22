@@ -10,7 +10,9 @@ find_package(directxmath CONFIG REQUIRED)
 find_package(LDtkLoader)
 
 # add the executable
-add_executable(LDtkD11 WIN32 Game.cpp Main.cpp pch.cpp Utilities.cpp EntityWrapper.cpp resource.rc)
+add_executable(${PROJECT_NAME} WIN32 Game.cpp Main.cpp pch.cpp  "Entity.cpp" resource.rc "BestiaryEntry.h" "BestiaryEntry.cpp" "Rand.h" )
+
+set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 20)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
 	d3d11.lib dxgi.lib dxguid.lib uuid.lib

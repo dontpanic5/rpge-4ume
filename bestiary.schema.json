@@ -1,0 +1,55 @@
+{
+	"$schema": "https://json-schema.org/draft/2020-12/schema",
+	"title": "Bestiary",
+	"description": "A compendium of beasts and entities for use in RPG-E 4U&ME",
+	"type": "array",
+	"items": {
+		"types": "entry"
+	},
+	"otherTypes": {
+		"entry": {
+			"title": "entry",
+			"description": "An entry in the Bestiary that describes some entity",
+			"type": "object",
+			"properties": {
+				"name": {
+					"description": "Name of entity",
+					"type": "string"
+				},
+				"loot": {
+					"description": "Gold or items that may be available from the entity through defeating it or stealing from it (Stealing TBD as a mechanic)",
+					"type": "object",
+					"properties": {
+						"gold_min": {
+							"type": "number"
+						},
+						"gold_max": {
+							"type": "number"
+						},
+						"item_drops": {
+							"type": "array",
+							"items": "item_drop"
+						}
+					}
+				}
+			},
+			"required": [ "name" ]
+		},
+		"item_drop": {
+			"title": "item_drop",
+			"description": "An item name and a drop chance",
+			"type": "object",
+			"properties": {
+				"item_name": {
+					"description": "name of item",
+					"type": "string"
+				},
+				"drop_chance": {
+					"description": "chance it will drop as percentage",
+					"type": "integer"
+				}
+			},
+			"required": [ "item_name", "drop_chance" ]
+		}
+	}
+}

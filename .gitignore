@@ -371,3 +371,5 @@ CMakeCache.txt
 *.ldtk
 share/
 CMakeSettings.json
+/minifantasy
+/dialogue.json

@@ -5,10 +5,9 @@
 #pragma once
 
 #include "StepTimer.h"
-//#include "AnimatedTexture.h"
-//#include "ScrollingBackground.h"
+#include "BestiaryEntry.h"
 
-#include "EntityWrapper.h"
+#include "Entity.h"
 
 #include "LDtkLoader/World.hpp"
 
@@ -77,8 +76,9 @@ private:
     // Rendering loop timer.
     DX::StepTimer                                   m_timer;
 
-    std::map <std::string, std::vector<EntityWrapper>> m_wrapped_entities_of_layers;
+    std::map <std::string, std::vector<rpge::Entity>> m_entities_of_layers;
 
+    std::unordered_map<std::string, rpge::BestiaryEntry> m_bestiary;
 
     std::unique_ptr<DirectX::CommonStates> m_states;
 

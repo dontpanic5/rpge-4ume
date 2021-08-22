@@ -22,15 +22,21 @@ using namespace DirectX::SimpleMath;
 
 using Microsoft::WRL::ComPtr;
 
+using namespace rpge;
+
 Game::Game(const std::wstring& file) noexcept :
 	m_window(nullptr),
 	m_outputWidth(1600),
 	m_outputHeight(800),
 	m_featureLevel(D3D_FEATURE_LEVEL_9_1)
 {
+	m_bestiary = GetFromJson<BestiaryEntry>("bestiary.json");
+
 	m_world.loadFromFile(Utf16ToUtf8(file));
 	const auto& all_levels = m_world.allLevels();
-	const auto& level = all_levels[0];
+
+	const auto& level = all_levels[0]; // TODO someday some logic to select different levels
+
 	m_level = level.name;
 
 	auto& layers = level.allLayers();
@@ -39,9 +45,18 @@ Game::Game(const std::wstring& file) noexcept :
 	{
 		if (it->getType() == ldtk::LayerType::Entities)
 		{
-			std::vector<EntityWrapper> wrapped_entities;
-			for_each(it->allEntities().begin(), it->allEntities().end(), [&](const ldtk::Entity& e) { wrapped_entities.emplace_back(e, m_world.getDefaultCellSize()); });
-			m_wrapped_entities_of_layers.insert(std::pair<std::string, std::vector<EntityWrapper>>(it->getName(), wrapped_entities));
+			std::vector<rpge::Entity> rpge_entities;
+			for_each(
+				it->allEntities().begin(),
+				it->allEntities().end(),
+				[&](const ldtk::Entity& e) {
+					if (m_bestiary.contains(e.getName()))
+						rpge_entities.emplace_back(e, m_world.getDefaultCellSize(), m_bestiary.at(e.getName()));
+					else
+						rpge_entities.emplace_back(e, m_world.getDefaultCellSize());
+				}
+			);
+			m_entities_of_layers.insert(std::pair<std::string, std::vector<rpge::Entity>>(it->getName(), rpge_entities));
 		}
 		++it;
 	}
@@ -83,7 +98,7 @@ void Game::Update(DX::StepTimer const& timer)
 	float elapsedTime = float(timer.GetElapsedSeconds());
 
 	// game logic
-	for (auto& entry : m_wrapped_entities_of_layers)
+	for (auto& entry : m_entities_of_layers)
 	{
 		for (auto& entity : entry.second)
 		{
@@ -161,7 +176,7 @@ void Game::Render()
 		}
 		else if (it->getType() == ldtk::LayerType::Entities)
 		{
-			for (auto& wrapped_entity : m_wrapped_entities_of_layers[it->getName()])
+			for (auto& wrapped_entity : m_entities_of_layers[it->getName()])
 			{
 				auto& entity = wrapped_entity.GetEntity();
 
