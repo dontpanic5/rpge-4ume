@@ -10,7 +10,7 @@ find_package(directxmath CONFIG REQUIRED)
 find_package(LDtkLoader)
 
 # add the executable
-add_executable(${PROJECT_NAME} WIN32 Game.cpp Main.cpp pch.cpp  "Entity.cpp" resource.rc "BestiaryEntry.h" "BestiaryEntry.cpp" "Rand.h" )
+add_executable(${PROJECT_NAME} WIN32 Game.cpp Main.cpp pch.cpp  "Entity.cpp" resource.rc "BestiaryEntry.h" "BestiaryEntry.cpp" "Rand.h"  "TargetDialogue.h" "TargetDialogue.cpp")
 
 set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 20)
 

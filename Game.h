@@ -6,6 +6,7 @@
 
 #include "StepTimer.h"
 #include "BestiaryEntry.h"
+#include "TargetDialogue.h"
 
 #include "Entity.h"
 
@@ -78,7 +79,8 @@ private:
 
     std::map <std::string, std::vector<rpge::Entity>> m_entities_of_layers;
 
-    std::unordered_map<std::string, rpge::BestiaryEntry> m_bestiary;
+    std::unordered_map<std::string, const rpge::BestiaryEntry> m_bestiary;
+    std::unordered_map<std::string, const rpge::TargetDialogue> m_dialogue;
 
     std::unique_ptr<DirectX::CommonStates> m_states;
 

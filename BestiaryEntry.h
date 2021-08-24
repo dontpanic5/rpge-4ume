@@ -21,9 +21,10 @@ namespace rpge {
 	class BestiaryEntry
 	{
 	public:
+		BestiaryEntry();
 		BestiaryEntry(const nlohmann::json& j);
-		std::string getName();
-		Loot getLoot();
+		const std::string& getName() const;
+		const Loot& getLoot() const;
 	private:
 		std::string m_name;
 		Loot m_loot;

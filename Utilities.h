@@ -15,7 +15,7 @@ ldtk::Point<T> TransformByPivot(const ldtk::FloatPoint& pivot, const ldtk::Point
 }
 
 template<typename T>
-std::unordered_map<std::string, T> GetFromJson(const std::string& filepath)
+std::unordered_map<std::string, const T> GetFromJson(const std::string& filepath)
 {
 	std::ifstream in(filepath);
 	if (in.fail())
@@ -23,10 +23,10 @@ std::unordered_map<std::string, T> GetFromJson(const std::string& filepath)
 	nlohmann::json j;
 	in >> j;
 
-	std::unordered_map<std::string, T> m;
+	std::unordered_map<std::string, const T> m;
 	for (const auto& t : j)
 	{
-		auto n = T(t);
+		const auto n = T(t);
 		m.emplace(n.getName(), n);
 	}
 

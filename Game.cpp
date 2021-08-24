@@ -28,10 +28,10 @@ Game::Game(const std::wstring& file) noexcept :
 	m_window(nullptr),
 	m_outputWidth(1600),
 	m_outputHeight(800),
-	m_featureLevel(D3D_FEATURE_LEVEL_9_1)
+	m_featureLevel(D3D_FEATURE_LEVEL_9_1),
+	m_bestiary(GetFromJson<BestiaryEntry>("bestiary.json")),
+	m_dialogue(GetFromJson<TargetDialogue>("dialogue.json"))
 {
-	m_bestiary = GetFromJson<BestiaryEntry>("bestiary.json");
-
 	m_world.loadFromFile(Utf16ToUtf8(file));
 	const auto& all_levels = m_world.allLevels();
 
@@ -50,10 +50,24 @@ Game::Game(const std::wstring& file) noexcept :
 				it->allEntities().begin(),
 				it->allEntities().end(),
 				[&](const ldtk::Entity& e) {
-					if (m_bestiary.contains(e.getName()))
-						rpge_entities.emplace_back(e, m_world.getDefaultCellSize(), m_bestiary.at(e.getName()));
+					if (m_dialogue.contains(e.getName()))
+					{
+						rpge_entities.emplace_back(
+							e,
+							m_world.getDefaultCellSize(),
+							m_bestiary.contains(e.getName()) ? m_bestiary.at(e.getName()) : BestiaryEntry(),
+							m_dialogue.at(e.getName())
+						);
+					}
 					else
-						rpge_entities.emplace_back(e, m_world.getDefaultCellSize());
+					{
+						rpge_entities.emplace_back(
+							e,
+							m_world.getDefaultCellSize(),
+							m_bestiary.contains(e.getName()) ? m_bestiary.at(e.getName()) : BestiaryEntry(),
+							TargetDialogue()
+						);
+					}
 				}
 			);
 			m_entities_of_layers.insert(std::pair<std::string, std::vector<rpge::Entity>>(it->getName(), rpge_entities));

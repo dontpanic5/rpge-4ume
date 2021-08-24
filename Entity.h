@@ -1,6 +1,7 @@
 #pragma once
 #include "LDtkLoader/Entity.hpp"
 #include "BestiaryEntry.h"
+#include "TargetDialogue.h"
 
 namespace rpge {
 
@@ -8,7 +9,9 @@ namespace rpge {
 	{
 	public:
 		Entity(const ldtk::Entity& e, int cell_size);
-		Entity(const ldtk::Entity& e, int cell_size, const rpge::BestiaryEntry);
+		Entity(const ldtk::Entity& e, int cell_size, const rpge::BestiaryEntry&);
+		Entity(const ldtk::Entity& e, int cell_size, const rpge::TargetDialogue&);
+		Entity(const ldtk::Entity& e, int cell_size, const rpge::BestiaryEntry&, const rpge::TargetDialogue&);
 
 		auto GetEntity() const -> const ldtk::Entity&;
 		const ldtk::FloatPoint& GetPos() const;
@@ -21,6 +24,8 @@ namespace rpge {
 
 		int m_gold = 0;
 		std::vector<std::string> m_items;
+
+		const rpge::TargetDialogue& m_dialogue;
 
 		int m_patrol_idx = 0;
 		bool m_patrolling_forward = true;

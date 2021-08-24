@@ -8,21 +8,10 @@
 
 using namespace rpge;
 
-Entity::Entity(const ldtk::Entity& e, int cell_size, rpge::BestiaryEntry be) : Entity(e, cell_size)
-{
-	if (be.getLoot().gold_max)
-		m_gold = Rand<unsigned int>(be.getLoot().gold_max, be.getLoot().gold_min)();
-
-	if (be.getLoot().item_drops.size() > 0)
-	{
-		auto r = Rand<unsigned int>(100, 0);
-		for (auto& item : be.getLoot().item_drops)
-			if (r() <= item.drop_chance)
-				m_items.push_back(item.item_name);
-	}
-}
-
-Entity::Entity(const ldtk::Entity& e, int cell_size) :m_entity(e), m_pos(static_cast<float>(e.getPosition().x), static_cast<float>(e.getPosition().y)), m_cell_size(cell_size)
+Entity::Entity(const ldtk::Entity& e, int cell_size, const BestiaryEntry& be, const TargetDialogue& d)
+	:m_entity(e),
+	m_pos(static_cast<float>(e.getPosition().x), static_cast<float>(e.getPosition().y)), m_cell_size(cell_size),
+	m_dialogue(d)
 {
 	try {
 		auto& patrol = m_entity.getArrayField<ldtk::IntPoint>("patrol");
@@ -43,7 +32,25 @@ Entity::Entity(const ldtk::Entity& e, int cell_size) :m_entity(e), m_pos(static_
 		err; // do nothing
 		m_moves = false;
 	}
+
+
+	if (be.getLoot().gold_max)
+		m_gold = Rand<unsigned int>(be.getLoot().gold_max, be.getLoot().gold_min)();
+
+	if (be.getLoot().item_drops.size() > 0)
+	{
+		auto r = Rand<unsigned int>(100, 0);
+		for (auto& item : be.getLoot().item_drops)
+			if (r() <= item.drop_chance)
+				m_items.push_back(item.item_name);
+	}
 }
+
+Entity::Entity(const ldtk::Entity& e, int cell_size, const BestiaryEntry& be) : Entity(e, cell_size, be, TargetDialogue()) {}
+
+Entity::Entity(const ldtk::Entity& e, int cell_size, const TargetDialogue& d) : Entity(e, cell_size, BestiaryEntry(), d) {}
+
+Entity::Entity(const ldtk::Entity& e, int cell_size) : Entity(e, cell_size, BestiaryEntry(), TargetDialogue()) {}
 
 auto Entity::GetEntity() const -> const ldtk::Entity&
 {

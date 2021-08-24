@@ -4,16 +4,16 @@
   "description": "Contains all dialogue for a game in RPG-E 4U&ME",
   "type": "array",
   "items": {
-    "types": "initial_actor"
+    "types": "target_dialogue"
   },
   "otherTypes": {
-    "initial_actor": {
-      "title": "Initial Actor",
+    "target_dialogue": {
+      "title": "Dialogue for Target",
       "description": "The actor which dialogue has been initiated with. An actor can potentially be anything: An NPC, another player character, an inanimate object (i.e. 'The bookshelf has many old books').",
       "type": "object",
       "properties": {
         "name": {
-          "description": "Identifier of the actor",
+          "description": "Identifier of the target",
           "type": "string"
         },
         "specials": {
@@ -31,7 +31,7 @@
           }
         }
       },
-      "required":  ["name", "defaults"]
+      "required": [ "name", "defaults" ]
     },
     "special_dialogue": {
       "title": "Special Dialogue",
@@ -39,14 +39,15 @@
       "type": "object",
       "properties": {
         "condition": {
-          "description": "A condition in which the dialogue property is relevant to be acted TODO I don't know how to represent this yet"
+          "description": "A condition in which the dialogue property is relevant to be acted",
+          "type": "string"
         },
         "dialogue": {
           "description": "The dialogue for the condition",
           "type": "dialogue"
         }
       },
-      "required": ["dialogue"]
+      "required": [ "dialogue", "condition" ]
     },
     "dialogue": {
       "title": "Dialogue",
@@ -70,7 +71,7 @@
           "type": "string"
         }
       },
-      "required": ["line"]
+      "required": [ "line" ]
     }
   }
 }

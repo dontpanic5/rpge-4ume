@@ -24,12 +24,14 @@ BestiaryEntry::BestiaryEntry(const nlohmann::json& j) : m_name(j["name"].get<std
 	}
 }
 
-string BestiaryEntry::getName()
+BestiaryEntry::BestiaryEntry() {}
+
+const string& BestiaryEntry::getName() const
 {
 	return m_name;
 }
 
-Loot BestiaryEntry::getLoot()
+const Loot& BestiaryEntry::getLoot() const
 {
 	return m_loot;
 }
