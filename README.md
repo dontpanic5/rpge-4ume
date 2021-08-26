@@ -25,6 +25,7 @@ Information about beasts, monsters, NPCs, adversaries, daemons, fairies, fey... 
 Verbal interactions. Dialogue is assigned to the "actor" that will be interacted with. For example, a shopkeeper who is approached by the player character will store the dialogue that occurs when they are interacted with. This may include dialogue from the player or any other actor that participates in the dialogue, but it's dialogue that 'belongs' to the shopkeeper. Dialogue can even belong to inanimate objects, if they spark dialogue when interacted with. Monologues can also be stored as dialogue (I know they're not the same, shut up).
 Dialogue is seperated into two kinds: "defaults" that are acted when no special conditions are true, and "specials" that are acted when a special condition evaluates true.
 
+## Build
 Use CMake to build, current dependencies are:
 * directxtk (https://github.com/microsoft/DirectXTK). Available on [VCPKG](vcpkg.io).
 * directxmath. Availble on [VCPKG](vcpkg.io).
