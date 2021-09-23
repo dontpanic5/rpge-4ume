@@ -133,7 +133,7 @@ void Game::Render()
 	Clear();
 
 	auto matrix = DirectX::XMMatrixIdentity();
-	matrix *= DirectX::XMMatrixScaling(2, 2, 1);
+	matrix *= DirectX::XMMatrixScaling(m_scale, m_scale, 1);
 
 	m_spriteBatch->Begin(
 		SpriteSortMode_Deferred,
