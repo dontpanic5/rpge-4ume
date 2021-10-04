@@ -10,6 +10,8 @@
 
 #include "Entity.h"
 
+#include "InputManager.h"
+
 #include "LDtkLoader/World.hpp"
 
 #include <map>

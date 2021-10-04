@@ -112,6 +112,9 @@ void Game::Update(DX::StepTimer const& timer)
 	float elapsedTime = float(timer.GetElapsedSeconds());
 
 	// game logic
+
+
+
 	for (auto& entry : m_entities_of_layers)
 	{
 		for (auto& entity : entry.second)
