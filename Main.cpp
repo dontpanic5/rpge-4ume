@@ -19,7 +19,7 @@ namespace
     std::unique_ptr<Game> g_game;
 }
 
-LPCWSTR g_szAppName = L"Level Builder";
+LPCWSTR g_szAppName = L"RPGe 4U&Me";
 
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 
